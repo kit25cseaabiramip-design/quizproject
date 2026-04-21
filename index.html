@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Python Quiz</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    margin: 0;
+}
+
+.container {
+    width: 60%;
+    margin: 30px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+h2 {
+    text-align: center;
+}
+
+.timer {
+    text-align: right;
+    font-weight: bold;
+    color: red;
+}
+
+.question {
+    margin-top: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    background: #4facfe;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #007bff;
+}
+</style>
+
+<script>
+let time = 60;
+
+function startTimer() {
+    let t = document.getElementById("timer");
+
+    let interval = setInterval(function() {
+        t.innerHTML = time + " sec";
+        time--;
+
+        if (time < 0) {
+            clearInterval(interval);
+            alert("Time Up!");
+            document.getElementById("quizForm").submit();
+        }
+    }, 1000);
+}
+</script>
+
+</head>
+
+<body onload="startTimer()">
+
+<div class="container">
+
+<h2>🧠 Python Quiz</h2>
+
+<div class="timer">⏱ Time: <span id="timer"></span></div>
+
+<form method="post" action="/submit" id="quizForm">
+
+<p><b>Name:</b></p>
+<input type="text" name="name" required style="padding:5px;"><br><br>
+
+{% for q in questions %}
+<div class="question">
+<p><b>{{q.q}}</b></p>
+
+{% for opt in q.op %}
+<input type="radio" name="{{q.id}}" value="{{opt}}"> {{opt}}<br>
+{% endfor %}
+</div>
+{% endfor %}
+
+<br>
+<center>
+<button type="submit">Submit</button>
+</center>
+
+</form>
+
+</div>
+
+</body>
+</html>
